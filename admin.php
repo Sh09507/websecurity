@@ -58,7 +58,7 @@
 				try {
 					$query = 'DELETE FROM users WHERE user_name = :username;';
 					$dbquery = $myDBconnection -> prepare($query);
-					echo $value['user_name'];
+					echo "test";
 					$dbquery -> bindValue(':username', $value['user_name']); 
 					$dbquery -> execute();
 					//header('Location:admin.php');
