@@ -112,7 +112,7 @@
 										$statement -> execute();
 										echo "You have been successfully registered!";
 										require_once "logging.php";
-										auditlog($myDBconnection,"New account registered", 0, $username, $password, $question, $answer);
+										auditlog($myDBconnection,"New Account Registered", 0, $username, $password, $question, $answer);
 									} catch (PDOException $e) {
 										$error_message = $e->getMessage();
 										echo "An error occurred while selecting data from the table: $error_message";

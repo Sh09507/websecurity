@@ -92,9 +92,13 @@
 						if (!empty($result)) {
 							echo "Welcome back";
 							$_SESSION["MySession"] = $username;
+							require_once "logging.php";
+							auditlog($myDBconnection,"User Login", 0, $username, $password, "NULL", "NULL");
 							header('Location: index.php');
 						}else {
 							echo "User not found, please try again.";
+							require_once "logging.php";
+							auditlog($myDBconnection,"Login Attempt Failed", 1, $username, $password, "NULL", "NULL");
 							session_unset($_SESSION["MySession"]);
 							session_destroy();
 						}
