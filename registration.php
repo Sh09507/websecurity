@@ -30,21 +30,20 @@
 
 						<label id="user"><b>User Name: </b></label>
 						<input type="text" placeholder="Enter User Name" name="user" required>
-
+						<br>
 						<label id="psw"><b>Password: </b></label>
 						<input type="password" placeholder="Enter Password" name="psw" required>
-						
+						<br>
 						<label id="question"><b>Security Question: </b></label>
-						<input type="text" name="question" required>
-						<select name="question" id="question">       
-							<option value=" ">&nbsp;</option>              
+						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
+						<datalist id="questionOptions">                 
 							<option value="What is the name of the town where you were born?"></option>       
 							<option value="Who was your childhood hero?"></option>    
 							<option value="Where was your best family vacation as a kid?"></option>    
 							<option value="What is the name of your first pet?"></option>    
 							<option value="What was your first car?"></option>       
-						</select> 
-						
+						</datalist> 
+						<br>
 						<label id="answer"><b>Security Answer: </b></label>
 						<input type="text" name="answer" required>
 
