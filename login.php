@@ -31,7 +31,7 @@
 						
 						<label id ="user"><b>User Name: </b></label>
 						<input type="text" name="username" placeholder="Enter User Name" required>
-						
+						<br>
 						<label id ="psw"><b>Password: </b></label>
 						<input type="password" name="password" placeholder="Enter Password" required>
 					</fieldset>
