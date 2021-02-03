@@ -34,7 +34,7 @@
 			}
 			
 			try {
-				$query = "SELECT user_name FROM items FROM users" ; 
+				$query = "SELECT user_name FROM users" ; 
 				$dbquery = $myDBconnection -> prepare($query);
 				$dbquery -> execute();						
 				$results = $dbquery -> fetchAll();
