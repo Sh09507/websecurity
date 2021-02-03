@@ -70,7 +70,7 @@
 		}
 		
 		//Check if form has not submited
-		if((isset($_POST["submit"]))){
+		if((isset($_POST["submit"])){
 			//are all the fields filled out? If not, empty do the following
 			if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
 				
@@ -110,7 +110,7 @@
 							$statement -> bindValue(":answer", $answer);
 							$statement -> execute();
 							echo "You have been successfully registured!";
-							require_once "logging.php"
+							require_once "logging.php";
 							auditlog($myDBconnection,"New account registured", 0, $username, $password, $question, $answer);
 						} catch (PDOException $e) {
 							$error_message = $e->getMessage();
@@ -122,9 +122,9 @@
 				} else {
 					echo "Not all fields have been sanitized.";
 				}
-			} 
-		}else {
+			} else {
 				echo "Not all fields have been filled in.";
+			}
 		}
 	?>
 </body>

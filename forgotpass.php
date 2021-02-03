@@ -32,7 +32,7 @@
 						<br>
 						<label id="question"><b>Security Question: </b></label>
 						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
-						<datalist id="questionOptions"     
+						<datalist id="questionOptions">    
 							<option value=" ">&nbsp;</option>              
 							<option value="What is the name of the town where you were born?"></option>       
 							<option value="Who was your childhood hero?"></option>    
