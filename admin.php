@@ -58,9 +58,9 @@
 				try {
 					$query = 'DELETE FROM users WHERE user_name = :username;';
 					$dbquery = $myDBconnection -> prepare($query);
+					echo $value['user_name'];
 					$dbquery -> bindValue(':username', $value['user_name']); 
 					$dbquery -> execute();
-					echo $value['user_name'];
 					//header('Location:admin.php');
 				} catch (PDOException $e) {
 					$error_message = $e->getMessage();
