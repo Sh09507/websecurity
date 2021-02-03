@@ -51,6 +51,7 @@
 					<input type="submit" value="Register" name="submit">
 				</form>
 				<?php
+				echo "test";
 					//connection info
 					require_once 'database.php'; 				
 					try {
