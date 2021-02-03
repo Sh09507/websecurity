@@ -7,7 +7,7 @@
 <?php
 function auditlog($myDBconnection, $event, $serverity, $username, $password, $question, $answer) {
 	try {
-		$query = 'INSERT INTO users (event,serverity,IP,time,user_name,password,security_question,answer) VALUES (:event, :serverity,:ip,NOW(),:user_name,:password,:security_question,:answer)';
+		$query = 'INSERT INTO users (event,serverity,IP,time,user_name,password,security_question,answer) VALUES (:event, :serverity,:ip,NOW(),:user_name,:password,:security_question,:answer);';
 		$statement = $myDBconnection -> prepare($query);
 		$statement -> bindValue(":event", $event);
 		$statement -> bindValue(":serverity", $serverity);
