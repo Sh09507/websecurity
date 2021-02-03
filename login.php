@@ -19,6 +19,7 @@
 				<li><a href="login.php">Log in</a></li>
 				<li><a href="registration.php">Registration</a></li>
 				<li><a href="admin.php">Admin</a></li>
+				<li><a href="forgotpass.php">Forgot Password</a></li>
 			</ul>
 		</nav>
 	</header>
