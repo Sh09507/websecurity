@@ -73,12 +73,12 @@
 					$username = sanitize($username);
 					$password = sanitize($password);
 					
-					if(strlen($_POST['user']) > 30 || strlen($_POST['psw']) > 50) {
+					if(strlen($_POST['username']) > 30 || strlen($_POST['password']) > 50) {
 								echo "<p>Maximum character limit has been reached!</p>";
 								require_once "logging.php";
 								auditlog($myDBconnection, "Login Attempt Exceeded Character Limit", 2, $username, $password, "NULL", "NULL");
 							} else {
-								if(strlen($_POST['psw']) < 10) {
+								if(strlen($_POST['password']) < 10) {
 									echo "<p>Password is too short!</p>";
 									require_once "logging.php";
 									auditlog($myDBconnection, "Login Attempt had too short of a password", 2, $username, $password, "NULL", "NULL");
