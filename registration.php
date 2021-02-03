@@ -60,12 +60,12 @@
 						$error_message = $e->getMessage();					
 						print $error_message . "<br>";
 					}
-					
+					echo "test";
 					function sani($bad){
 						$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
 						return $good;
 					}
-					
+					echo "test";
 					//Check if form has not submited
 					if(isset($_POST["submit"])){
 						echo "test";
