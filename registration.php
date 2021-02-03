@@ -69,7 +69,7 @@
 		}
 		
 		//Check if form has not submited
-		if((isset($_POST["submit"]))){
+		if((isset($_POST["submit"])){
 			//are all the fields filled out? If not, empty do the following
 			if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
 				
