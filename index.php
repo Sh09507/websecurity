@@ -29,11 +29,11 @@
 		<article>
 			<h2>Welcome to the Home page!</h2>
 			<?php
-				if ($login == 1) {
-					echo '<p> You are logged in!</p>';
-				} else {
-					echo '<P>Please sign up or log in.</p>';
-				}
+			if (isset($_SESSION['MySession'])) {
+				echo "<p>Welcome, " . $_SESSION['MySession'] . "</p>";
+			} else {
+				echo "<p>Please log in or register.</p>";
+			}
 			?>
 </body>
 
