@@ -47,7 +47,7 @@
 		?>
 			<ul>
 				<li><?php echo $value['user_name'];?>
-				<form>
+				<form method="post">
 					<input type="submit" name="delete"<?php echo $value['user_name']; ?> value="Delete User"/>
 				</form>
 				</li>
