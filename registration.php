@@ -68,9 +68,10 @@
 		
 		//Check if form has not submited
 		if(isset($_POST["submit"])){
+			echo "test";
 			//are all the fields filled out? If not, empty do the following
 			if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
-				
+				echo "test";
 				//Put all POST values into variables from form
 				$username = $_POST["user"];
 				$password = $_POST["psw"];
@@ -84,6 +85,7 @@
 				
 				//If username is not blank, test if it's in the database
 				if( $username != "" && $password != "" && $question != "" && $answer != "") {
+					echo "test";
 					try {
 						//See if username is in database
 						$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
@@ -97,6 +99,7 @@
 					} 
 					//If username is not in database, insert it
 					if (empty($results)) {
+						echo "test";
 						try {
 							//Check if table has the same fields & spelled the same way
 							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
