@@ -43,7 +43,7 @@
 				$error_message = $e -> getMessage(); 
 				echo $error_message . "<br>"; 
 			}
-			foreach ($results as $value){
+			foreach ($results as &$value){
 		?>
 			<ul>
 				<li><?php echo $value['user_name'];?>
