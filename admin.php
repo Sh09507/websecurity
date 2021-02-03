@@ -48,7 +48,7 @@
 			<ul>
 				<li><?php echo $value['user_name'];?>
 				<form method="post">
-					<input type="submit" name="delete <?php echo $value['user_name']; ?>" value="Delete User"/>
+					<input type="submit" name="delete<?php echo $value['user_name']; ?>" value="Delete User"/>
 				</form>
 				</li>
 		</ul>
@@ -61,7 +61,7 @@
 					echo "test";
 					$dbquery -> bindValue(':username', $value['user_name']); 
 					$dbquery -> execute();
-					//header('Location:admin.php');
+					header('Location:admin.php');
 				} catch (PDOException $e) {
 					$error_message = $e->getMessage();
 					echo "<p>An error occurred while trying to delete data from the table: $error_message </p>";
