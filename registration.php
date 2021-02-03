@@ -50,83 +50,83 @@
 					</fieldset>
 					<input type="submit" value="Register" name="submit">
 				</form>
-		</article>
-		<?php
-		//connection info
-		require_once 'database.php'; 				
-		try {
-			$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
-		} catch (PDOException $e) {
-			$error_message = $e->getMessage();					
-			print $error_message . "<br>";
-		}
-		
-		function sani($bad){
-			$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
-			return $good;
-		}
-		
-		//Check if form has not submited
-		if(isset($_POST["submit"])){
-			echo "test";
-			//are all the fields filled out? If not, empty do the following
-			if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
-				echo "test";
-				//Put all POST values into variables from form
-				$username = $_POST["user"];
-				$password = $_POST["psw"];
-				$question = $_POST["question"];
-				$answer = $_POST["answer"];
-				
-				$username = sani($username);
-				$password = sani($password);
-				$question = sani($question);
-				$answer = sani($answer);
-				
-				//If username is not blank, test if it's in the database
-				if( $username != "" && $password != "" && $question != "" && $answer != "") {
-					echo "test";
+				<?php
+					//connection info
+					require_once 'database.php'; 				
 					try {
-						//See if username is in database
-						$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
-						$dbquery = $myDBconnection -> prepare($query);
-						$dbquery -> bindValue(":user_name", $username);
-						$dbquery -> execute();
-						$results = $dbquery -> fetch();	
+						$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 					} catch (PDOException $e) {
-						$error_message = $e->getMessage();
-						echo "An error occurred while selecting data from the table: $error_message";
-					} 
-					//If username is not in database, insert it
-					if (empty($results)) {
-						echo "test";
-						try {
-							//Check if table has the same fields & spelled the same way
-							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
-							$statement = $myDBconnection -> prepare($query);
-							$statement -> bindValue(":user_name", $username);
-							$statement -> bindValue(":password", $password);
-							$statement -> bindValue(":security_question", $question);
-							$statement -> bindValue(":answer", $answer);
-							$statement -> execute();
-							echo "You have been successfully registered!";
-							require_once "logging.php";
-							auditlog($myDBconnection,"New account registered", 0, $username, $password, $question, $answer);
-						} catch (PDOException $e) {
-							$error_message = $e->getMessage();
-							echo "An error occurred while selecting data from the table: $error_message";
-						}
-					} else {
-						echo "This username is already taken.";
+						$error_message = $e->getMessage();					
+						print $error_message . "<br>";
 					}
-				} else {
-					echo "Not all fields have been sanitized.";
-				}
-			} 
-		}else {
-				echo "Not all fields have been filled in.";
-		}
-	?>
+					
+					function sani($bad){
+						$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
+						return $good;
+					}
+					
+					//Check if form has not submited
+					if(isset($_POST["submit"])){
+						echo "test";
+						//are all the fields filled out? If not, empty do the following
+						if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
+							echo "test";
+							//Put all POST values into variables from form
+							$username = $_POST["user"];
+							$password = $_POST["psw"];
+							$question = $_POST["question"];
+							$answer = $_POST["answer"];
+							
+							$username = sani($username);
+							$password = sani($password);
+							$question = sani($question);
+							$answer = sani($answer);
+							
+							//If username is not blank, test if it's in the database
+							if( $username != "" && $password != "" && $question != "" && $answer != "") {
+								echo "test";
+								try {
+									//See if username is in database
+									$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
+									$dbquery = $myDBconnection -> prepare($query);
+									$dbquery -> bindValue(":user_name", $username);
+									$dbquery -> execute();
+									$results = $dbquery -> fetch();	
+								} catch (PDOException $e) {
+									$error_message = $e->getMessage();
+									echo "An error occurred while selecting data from the table: $error_message";
+								} 
+								//If username is not in database, insert it
+								if (empty($results)) {
+									echo "test";
+									try {
+										//Check if table has the same fields & spelled the same way
+										$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
+										$statement = $myDBconnection -> prepare($query);
+										$statement -> bindValue(":user_name", $username);
+										$statement -> bindValue(":password", $password);
+										$statement -> bindValue(":security_question", $question);
+										$statement -> bindValue(":answer", $answer);
+										$statement -> execute();
+										echo "You have been successfully registered!";
+										require_once "logging.php";
+										auditlog($myDBconnection,"New account registered", 0, $username, $password, $question, $answer);
+									} catch (PDOException $e) {
+										$error_message = $e->getMessage();
+										echo "An error occurred while selecting data from the table: $error_message";
+									}
+								} else {
+									echo "This username is already taken.";
+								}
+							} else {
+								echo "Not all fields have been sanitized.";
+							}
+						} 
+					}else {
+							echo "Not all fields have been filled in.";
+					}
+				?>
+		</article>
 	</main>
 </body>
 </html>
