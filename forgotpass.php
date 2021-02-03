@@ -82,36 +82,42 @@
 					$username = sani($username);
 					$question = sani($question);
 					$answer = sani($answer);
-						
-					//do all the sanitized variables still have a value?
-					if(  $username != "" && $question != "" && $answer != "" ) {
-						try {
-							//check to see if your table has the same fields & is spelled the same way
-							$query = 'SELECT user_name, password, security_question, answer FROM users WHERE user_name = :username AND
-							security_question = :question AND answer = :answer;';
-							$statement = $myDBconnection -> prepare($query);
-							$statement -> bindValue(':username', $username); 
-							$statement -> bindValue(':question', $question);
-							$statement -> bindValue(':answer', $answer);
-							$statement -> execute();
-							$result = $statement -> fetch();
-						} catch (PDOException $e) {
-							$error_message = $e->getMessage();
-							echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
+					
+					if(strlen($_POST['user']) > 30 || strlen($_POST['answer']) > 50) {
+						echo "<p>Maximum character limit has been reached!</p>";
+						require_once "logging.php";
+						auditlog($myDBconnection, "Recovery Attempt Exceeded Character Limit", 2, $username, "NULL", $question, $answer);
+					} else {					
+						//do all the sanitized variables still have a value?
+						if(  $username != "" && $question != "" && $answer != "" ) {
+							try {
+								//check to see if your table has the same fields & is spelled the same way
+								$query = 'SELECT user_name, password, security_question, answer FROM users WHERE user_name = :username AND
+								security_question = :question AND answer = :answer;';
+								$statement = $myDBconnection -> prepare($query);
+								$statement -> bindValue(':username', $username); 
+								$statement -> bindValue(':question', $question);
+								$statement -> bindValue(':answer', $answer);
+								$statement -> execute();
+								$result = $statement -> fetch();
+							} catch (PDOException $e) {
+								$error_message = $e->getMessage();
+								echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
+							}
+							//Does the username match the data in the table? 
+							if (!empty($result)) {
+								echo "Your password is " . $result["password"];
+								require_once "logging.php";
+								auditlog($myDBconnection,"User Password Recovered", 1, $username,"NULL", $question, $answer);
+							}else {
+								echo "Invalid credentials. Try again.";
+								require_once "logging.php";
+								auditlog($myDBconnection,"Password Recovery Failed", 1, $username,"NULL", $question, $answer);
+							}
+						} else { //not all sanitized variables have values
+							echo "<p>Bad data was inserted into the fields.</p>";
 						}
-						//Does the username match the data in the table? 
-						if (!empty($result)) {
-							echo "Your password is " . $result["password"];
-							require_once "logging.php";
-							auditlog($myDBconnection,"User Password Recovered", 1, $username,"NULL", $question, $answer);
-						}else {
-							echo "Invalid credentials. Try again.";
-							require_once "logging.php";
-							auditlog($myDBconnection,"Password Recovery Failed", 1, $username,"NULL", $question, $answer);
-						}
-					} else { //not all sanitized variables have values
-						echo "<p>Bad data was inserted into the fields.</p>";
-					}			
+					}						
 				} else { //not all fields were filled in
 					echo "<p>Not all fields were filled in.</p>";
 				}
