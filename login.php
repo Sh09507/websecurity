@@ -31,10 +31,10 @@
 						<legend>Please enter your details to log in.</legend>
 						
 						<label id ="user"><b>User Name: </b></label>
-						<input type="text" name="username" placeholder="Enter User Name" required>
+						<input type="text" name="username" placeholder="Enter User Name" maxlength="30" required>
 						<br>
 						<label id ="psw"><b>Password: </b></label>
-						<input type="password" name="password" placeholder="Enter Password" required>
+						<input type="password" name="password" placeholder="Enter Password" maxlength="50" pattern=".{10,}" required>
 					</fieldset>
 					<input type="submit" value="Login" name="submit">
 				</form>

@@ -30,10 +30,10 @@
 						<legend>Please enter your details to register.</legend>
 
 						<label id="user"><b>User Name: </b></label>
-						<input type="text" placeholder="Enter User Name" name="user" required>
+						<input type="text" placeholder="Enter User Name" name="user" maxlength="30" required>
 						<br>
 						<label id="psw"><b>Password: </b></label>
-						<input type="password" placeholder="Enter Password" name="psw" required>
+						<input type="password" placeholder="Enter Password" name="psw" maxlength="50" pattern=".{10,}" required>
 						<br>
 						<label id="question"><b>Security Question: </b></label>
 						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
@@ -46,7 +46,7 @@
 						</datalist> 
 						<br>
 						<label id="answer"><b>Security Answer: </b></label>
-						<input type="text" name="answer" required>
+						<input type="text" name="answer" maxlength="50" required>
 
 					</fieldset>
 					<input type="submit" value="Register" name="submit">
@@ -84,44 +84,56 @@
 							$question = sani($question);
 							$answer = sani($answer);
 							
-							//If username is not blank, test if it's in the database
-							if( $username != "" && $password != "" && $question != "" && $answer != "") {
-								//echo "test6";
-								try {
-									//See if username is in database
-									$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
-									$dbquery = $myDBconnection -> prepare($query);
-									$dbquery -> bindValue(":user_name", $username);
-									$dbquery -> execute();
-									$results = $dbquery -> fetch();	
-								} catch (PDOException $e) {
-									$error_message = $e->getMessage();
-									echo "An error occurred while selecting data from the table: $error_message";
-								} 
-								//If username is not in database, insert it
-								if (empty($results)) {
-									//echo "test7";
-									try {
-										//Check if table has the same fields & spelled the same way
-										$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
-										$statement = $myDBconnection -> prepare($query);
-										$statement -> bindValue(":user_name", $username);
-										$statement -> bindValue(":password", $password);
-										$statement -> bindValue(":security_question", $question);
-										$statement -> bindValue(":answer", $answer);
-										$statement -> execute();
-										echo "You have been successfully registered!";
-										require_once "logging.php";
-										auditlog($myDBconnection,"New Account Registered", 0, $username, $password, $question, $answer);
-									} catch (PDOException $e) {
-										$error_message = $e->getMessage();
-										echo "An error occurred while selecting data from the table: $error_message";
-									}
-								} else {
-									echo "This username is already taken.";
-								}
+							if(strlen($_POST['user']) > 30 || strlen($_POST['psw']) > 50 || strlen($_POST['answer']) > 50) {
+								echo "<p>Maximum character limit has been reached!</p>";
+								require_once "logging.php";
+								auditlog($myDBconnection, "Register Attempt Exceeded Character Limit", 2, $username, $password, $question, $answer);
 							} else {
-								echo "Not all fields have been sanitized.";
+								if(strlen($_POST['psw']) < 10) {
+									echo "<p>Password is too short!</p>";
+									require_once "logging.php";
+									auditlog($myDBconnection, "Register Attempt had too short of a password", 2, $username, $password, $question, $answer);
+								} else {
+									//If username is not blank, test if it's in the database
+									if( $username != "" && $password != "" && $question != "" && $answer != "") {
+										//echo "test6";
+										try {
+											//See if username is in database
+											$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
+											$dbquery = $myDBconnection -> prepare($query);
+											$dbquery -> bindValue(":user_name", $username);
+											$dbquery -> execute();
+											$results = $dbquery -> fetch();	
+										} catch (PDOException $e) {
+											$error_message = $e->getMessage();
+											echo "An error occurred while selecting data from the table: $error_message";
+										} 
+										//If username is not in database, insert it
+										if (empty($results)) {
+											//echo "test7";
+											try {
+												//Check if table has the same fields & spelled the same way
+												$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
+												$statement = $myDBconnection -> prepare($query);
+												$statement -> bindValue(":user_name", $username);
+												$statement -> bindValue(":password", $password);
+												$statement -> bindValue(":security_question", $question);
+												$statement -> bindValue(":answer", $answer);
+												$statement -> execute();
+												echo "You have been successfully registered!";
+												require_once "logging.php";
+												auditlog($myDBconnection,"New Account Registered", 0, $username, $password, $question, $answer);
+											} catch (PDOException $e) {
+												$error_message = $e->getMessage();
+												echo "An error occurred while selecting data from the table: $error_message";
+											}
+										} else {
+											echo "This username is already taken.";
+										}
+									} else {
+										echo "Not all fields have been sanitized.";
+									}
+								}
 							}
 						} else {
 							echo "Not all fields have been filled in.";

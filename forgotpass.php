@@ -29,7 +29,7 @@
 						<legend>Please enter your details to register.</legend>
 						<br>
 						<label id="user"><b>User Name: </b></label>
-						<input type="text" placeholder="Enter User Name" name="user" required>
+						<input type="text" placeholder="Enter User Name" name="user" maxlength="30" required>
 						<br>
 						<label id="question"><b>Security Question: </b></label>
 						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
@@ -42,7 +42,7 @@
 						</datalist> 
 						<br>
 						<label id="answer"><b>Security Answer: </b></label>
-						<input type="text" name="answer" required>
+						<input type="text" name="answer" maxlength="50" required>
 
 					</fieldset>
 					<input type="submit" value="Recover Password" name="recover">
