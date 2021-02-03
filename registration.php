@@ -121,9 +121,9 @@
 							} else {
 								echo "Not all fields have been sanitized.";
 							}
-						} 
-					}else {
+						} else {
 							echo "Not all fields have been filled in.";
+						}
 					}
 				?>
 		</article>
