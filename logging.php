@@ -5,7 +5,7 @@
     Filename: logging.php
    -->
 <?php
-function auditlog ($myDBconnection, $event, $serverity, $username, $password, $question, $answer) {
+function auditlog($myDBconnection, $event, $serverity, $username, $password, $question, $answer) {
 	try {
 		$query = 'INSERT INTO users (event,serverity,IP,time,user_name,password,security_question,answer) VALUES (:event, :serverity,:ip,:time,:user_name,:password,:security_question,:answer)';
 		$statement = $myDBconnection -> prepare($query);

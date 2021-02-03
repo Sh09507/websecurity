@@ -24,10 +24,19 @@
 	</header>
 	<main>
 		<?php
+			require_once 'database.php'; 
+			try {
+				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
+			} catch (PDOException $e) {
+				$error_message = $e->getMessage();
+				print $error_message . "<br>";
+			}
+			
 			try {
 				$query = "SELECT user_name FROM items FROM users" ; 
 				$dbquery = $myDBconnection -> prepare($query);
-				$dbquery -> execute();						$results = $dbquery -> fetchAll();
+				$dbquery -> execute();						
+				$results = $dbquery -> fetchAll();
 			}
 			catch (PDOException $e) {
 				$error_message = $e -> getMessage(); 
@@ -50,7 +59,7 @@
 					$dbquery = $myDBconnection -> prepare($query);
 					$dbquery -> bindValue(':username', $value['user_name']); 
 					$dbquery -> execute();
-					header('Location:admin.php')
+					header('Location:admin.php');
 				} catch (PDOException $e) {
 					$error_message = $e->getMessage();
 					echo "<p>An error occurred while trying to delete data from the table: $error_message </p>";
