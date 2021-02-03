@@ -103,11 +103,11 @@
 						if (!empty($result)) {
 							echo "Your password is " . $result["password"];
 							require_once "logging.php";
-							auditlog($myDBconnection,"User Password Recovered", 1, $username,"NULL" $question, $answer);
+							auditlog($myDBconnection,"User Password Recovered", 1, $username,"NULL", $question, $answer);
 						}else {
 							echo "Invalid credentials. Try again.";
 							require_once "logging.php";
-							auditlog($myDBconnection,"Password Recovery Failed", 1, $username,"NULL" $question, $answer);
+							auditlog($myDBconnection,"Password Recovery Failed", 1, $username,"NULL", $question, $answer);
 						}
 					} else { //not all sanitized variables have values
 						echo "<p>Bad data was inserted into the fields.</p>";
