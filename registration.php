@@ -88,7 +88,7 @@
 				if( $username != "" && $password != "" && $question != "" && $answer != "") {
 					try {
 						//See if username is in database
-						$query = 'SELECT user_name FROM users WHERE user_name = :user_name';
+						$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
 						$dbquery = $myDBconnection -> prepare($query);
 						$dbquery -> bindValue(":user_name", $username);
 						$dbquery -> execute();
@@ -101,7 +101,7 @@
 					if (empty($results)) {
 						try {
 							//Check if table has the same fields & spelled the same way
-							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer)';
+							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer;)';
 							$statement = $myDBconnection -> prepare($query);
 							$statement -> bindValue(":user_name", $username);
 							$statement -> bindValue(":password", $password);
