@@ -30,20 +30,21 @@
 
 						<label id="user"><b>User Name: </b></label>
 						<input type="text" placeholder="Enter User Name" name="user" required>
-						<br>
+
 						<label id="psw"><b>Password: </b></label>
 						<input type="password" placeholder="Enter Password" name="psw" required>
-						<br>
+						
 						<label id="question"><b>Security Question: </b></label>
-						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
-						<datalist id="questionOptions">                 
+						<input type="text" name="question" required>
+						<select name="question" id="question">       
+							<option value=" ">&nbsp;</option>              
 							<option value="What is the name of the town where you were born?"></option>       
 							<option value="Who was your childhood hero?"></option>    
 							<option value="Where was your best family vacation as a kid?"></option>    
 							<option value="What is the name of your first pet?"></option>    
 							<option value="What was your first car?"></option>       
-						</datalist> 
-						<br>
+						</select> 
+						
 						<label id="answer"><b>Security Answer: </b></label>
 						<input type="text" name="answer" required>
 
@@ -69,7 +70,7 @@
 		}
 		
 		//Check if form has not submited
-		if((isset($_POST["submit"])){
+		if((isset($_POST["submit"]))){
 			//are all the fields filled out? If not, empty do the following
 			if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
 				
@@ -88,7 +89,7 @@
 				if( $username != "" && $password != "" && $question != "" && $answer != "") {
 					try {
 						//See if username is in database
-						$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
+						$query = 'SELECT user_name FROM users WHERE user_name = :user_name';
 						$dbquery = $myDBconnection -> prepare($query);
 						$dbquery -> bindValue(":user_name", $username);
 						$dbquery -> execute();
@@ -101,7 +102,7 @@
 					if (empty($results)) {
 						try {
 							//Check if table has the same fields & spelled the same way
-							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer;)';
+							$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer)';
 							$statement = $myDBconnection -> prepare($query);
 							$statement -> bindValue(":user_name", $username);
 							$statement -> bindValue(":password", $password);
@@ -109,7 +110,7 @@
 							$statement -> bindValue(":answer", $answer);
 							$statement -> execute();
 							echo "You have been successfully registured!";
-							require_once "logging.php";
+							require_once "logging.php"
 							auditlog($myDBconnection,"New account registured", 0, $username, $password, $question, $answer);
 						} catch (PDOException $e) {
 							$error_message = $e->getMessage();
@@ -121,9 +122,9 @@
 				} else {
 					echo "Not all fields have been sanitized.";
 				}
-			} else {
+			} 
+		}else {
 				echo "Not all fields have been filled in.";
-			}
 		}
 	?>
 </body>
