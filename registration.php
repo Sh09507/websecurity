@@ -51,7 +51,7 @@
 					<input type="submit" value="Register" name="submit">
 				</form>
 				<?php
-				echo "test1";
+				//echo "test1";
 					//connection info
 					require_once 'database.php'; 				
 					try {
@@ -60,18 +60,18 @@
 						$error_message = $e->getMessage();					
 						print $error_message . "<br>";
 					}
-					echo "test2";
+					//echo "test2";
 					function sani($bad){
 						$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
 						return $good;
 					}
-					echo "test3";
+					//echo "test3";
 					//Check if form has not submited
 					if(isset($_POST["submit"])){
-						echo "test";
+						//echo "test4";
 						//are all the fields filled out? If not, empty do the following
 						if( !(empty($_POST["user"])) && !(empty($_POST["psw"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
-							echo "test4";
+							//echo "test5";
 							//Put all POST values into variables from form
 							$username = $_POST["user"];
 							$password = $_POST["psw"];
@@ -85,7 +85,7 @@
 							
 							//If username is not blank, test if it's in the database
 							if( $username != "" && $password != "" && $question != "" && $answer != "") {
-								echo "test5";
+								//echo "test6";
 								try {
 									//See if username is in database
 									$query = 'SELECT user_name FROM users WHERE user_name = :user_name;';
@@ -99,7 +99,7 @@
 								} 
 								//If username is not in database, insert it
 								if (empty($results)) {
-									echo "test6";
+									//echo "test7";
 									try {
 										//Check if table has the same fields & spelled the same way
 										$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
