@@ -7,7 +7,7 @@
    -->
 <?php
 	require "database.php";
-	if ($Admin == True){
+	if ($admin == True){
 		echo '<ul><li><a href="index.php">Home</a></li><li><a href="logout.php">Logout</a></li><li><a href="admin.php">Admin</a></li></ul>';
 	} else if ($loggedIn == True){
 		echo '<ul><li><a href="index.php">Home</a></li><li><a href="logout.php">Logout</a></li></ul>';
