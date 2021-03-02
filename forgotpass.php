@@ -44,7 +44,7 @@
 						<input type="password" name="password" placeholder="Enter New Password" maxlength="50" pattern=".{10,}" required>
 
 					</fieldset>
-					<input type="submit" value="Recover Password" name="recover">
+					<input type="submit" value="Change Password" name="recover">
 				</form>
 		</article>
 	</main>
