@@ -1,11 +1,11 @@
-<?php session_start(); ?>
+<?php require "cookie.php"; ?>
 <html lang="en">
 <head>
 <!--
     Registration Page
     Author: Sabrina Hill
 
-    Filename: registration.php
+    Filename: forgotpass.php
    -->
    <meta charset="utf-8"/>
     <title>Hill: Web Security</title>
@@ -13,13 +13,9 @@
 <body>
 	<header>
 		<nav>
-			<ul>
-				<li><a href="index.php">Home</a></li>
-				<li><a href="login.php">Log in</a></li>
-				<li><a href="logout.php">Logout</a></li>
-				<li><a href="registration.php">Registration</a></li>
-				<li><a href="admin.php">Admin</a></li>
-			</ul>
+			<?php
+				require "nav.php";
+			?>
 		</nav>
 	</header>
 	<main>
@@ -43,6 +39,9 @@
 						<br>
 						<label id="answer"><b>Security Answer: </b></label>
 						<input type="text" name="answer" maxlength="50" required>
+						<br>
+						<label id ="psw"><b>New Password: </b></label>
+						<input type="password" name="password" placeholder="Enter New Password" maxlength="50" pattern=".{10,}" required>
 
 					</fieldset>
 					<input type="submit" value="Recover Password" name="recover">
@@ -72,24 +71,27 @@
 			if(isset($_POST["recover"])){ 
 				
 				//are all the fields filled out?
-				if( !(empty($_POST["user"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"]))) {
+				if( !(empty($_POST["user"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"] && !(empty($_POST["password"]))) {
 						
 					//put all POST values into variables
 					$username = $_POST["user"];
 					$question = $_POST["question"];
 					$answer = $_POST["answer"];
+					$password = $_POST["password"];
 				
 					$username = sani($username);
 					$question = sani($question);
 					$answer = sani($answer);
+					$password = sani("password");
 					
-					if(strlen($_POST['user']) > 30 || strlen($_POST['answer']) > 50) {
+					if(strlen($_POST['user']) > 30 || strlen($_POST['answer']) > 50 || strlen($_POST['password']) > 50) {
 						echo "<p>Maximum character limit has been reached!</p>";
+						$password = password_hash($password, PASSWORD_DEFAULT);
 						require_once "logging.php";
-						auditlog($myDBconnection, "Recovery Attempt Exceeded Character Limit", 2, $username, "NULL", $question, $answer);
+						auditlog($myDBconnection, "Recovery Attempt Exceeded Character Limit", 2, $username, $password, $question, $answer);
 					} else {					
 						//do all the sanitized variables still have a value?
-						if(  $username != "" && $question != "" && $answer != "" ) {
+						if(  $username != "" && $question != "" && $answer != "" && $password != "" ) {
 							try {
 								//check to see if your table has the same fields & is spelled the same way
 								$query = 'SELECT user_name, password, security_question, answer FROM users WHERE user_name = :username AND
@@ -106,13 +108,20 @@
 							}
 							//Does the username match the data in the table? 
 							if (!empty($result)) {
-								echo "Your password is " . $result["password"];
+								$password = password_hash($password, PASSWORD_DEFAULT);
+								$query = 'UPDATE users SET password = :password WHERE user_name = :username;';
+								$statement = $myDBconnection -> prepare($query);
+								$statement -> bindValue(':username', $username); 
+								$statement -> bindValue(':password', $password);
+								$statement -> execute();
+								echo "Password has been updated. Please try Logging in.";
 								require_once "logging.php";
-								auditlog($myDBconnection,"User Password Recovered", 1, $username,"NULL", $question, $answer);
+								auditlog($myDBconnection,"User Password Changed", 1, $username,$password, $question, $answer);
 							}else {
 								echo "Invalid credentials. Try again.";
+								$password = password_hash($password, PASSWORD_DEFAULT);
 								require_once "logging.php";
-								auditlog($myDBconnection,"Password Recovery Failed", 1, $username,"NULL", $question, $answer);
+								auditlog($myDBconnection,"Password Recovery Failed", 1, $username,$password, $question, $answer);
 							}
 						} else { //not all sanitized variables have values
 							echo "<p>Bad data was inserted into the fields.</p>";

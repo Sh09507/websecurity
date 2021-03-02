@@ -1,5 +1,4 @@
 <?php
-session_start();
-session_destroy();
+setcookie('Auth', $token, time() - 3600, "/");
 header('Location:index.php');
 ?>

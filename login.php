@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php require "cookie.php"; ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +6,7 @@
     login Page
     Author: Sabrina Hill
 
-    Filename: index.php
+    Filename: login.php
    -->
    <meta charset="utf-8"/>
     <title>Hill: Web Security</title>
@@ -14,14 +14,9 @@
 <body>
 	<header>
 		<nav>
-			<ul>
-				<li><a href="index.php">Home</a></li>
-				<li><a href="login.php">Log in</a></li>
-				<li><a href="logout.php">Logout</a></li>
-				<li><a href="registration.php">Registration</a></li>
-				<li><a href="admin.php">Admin</a></li>
-				<li><a href="forgotpass.php">Forgot Password</a></li>
-			</ul>
+			<?php
+				require "nav.php";
+			?>
 		</nav>
 	</header>
 	<main>
@@ -34,7 +29,7 @@
 						<input type="text" name="username" placeholder="Enter User Name" maxlength="30" required>
 						<br>
 						<label id ="psw"><b>Password: </b></label>
-						<input type="password" name="password" placeholder="Enter Password" maxlength="50" pattern=".{10,}" required>
+						<input type="password" name="password" placeholder="Enter Password" maxlength="50" pattern=".{10,}" required> <a href="forgotpass.php">Forgot Password?</a>
 					</fieldset>
 					<input type="submit" value="Login" name="submit">
 				</form>
@@ -75,6 +70,7 @@
 					
 					if(strlen($_POST['username']) > 30 || strlen($_POST['password']) > 50) {
 								echo "<p>Maximum character limit has been reached!</p>";
+								$password = password_hash($password, PASSWORD_DEFAULT);
 								require_once "logging.php";
 								auditlog($myDBconnection, "Login Attempt Exceeded Character Limit", 2, $username, $password, "NULL", "NULL");
 							} else {
@@ -87,11 +83,9 @@
 									if( $username != "" && $password != "" ) {
 										try {
 											//check to see if your table has the same fields & is spelled the same way
-											$query = 'SELECT user_name, password FROM users WHERE user_name = :username AND
-											password = :password;';
+											$query = 'SELECT user_name, password, admin FROM users WHERE user_name = :username;';
 											$statement = $myDBconnection -> prepare($query);
 											$statement -> bindValue(':username', $username); 
-											$statement -> bindValue(':password', $password);
 											$statement -> execute();
 											$result = $statement -> fetch();
 										} catch (PDOException $e) {
@@ -99,14 +93,23 @@
 											echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
 										}
 										//Does the username match the data in the table? 
-										if (!empty($result)) {
+										if (!empty($result) && password_verify($password, $result['password'])) {
 											echo "Welcome back";
-											$_SESSION["MySession"] = $username;
+											$token = bin2hex(random_bytes(15));
+											$query = 'INSERT INTO Cookies (user_name, Token, Expiration, admin) VALUES (:username, :token, DATE_ADD(NOW(), INTERVAL 7 DAY), :admin);';
+											$statement = $myDBconnection -> prepare($query);
+											$statement -> bindValue(':username', $username); 
+											$statement -> bindValue(':token', $token);
+											$statement -> bindValue(':admin', $result['admin']);
+											$statement -> execute();
+											setcookie('Auth', $token, time() + (86400 * 7), "/");
+											$password = password_hash($password, PASSWORD_DEFAULT);
 											require_once "logging.php";
 											auditlog($myDBconnection,"User Login", 0, $username, $password, "NULL", "NULL");
 											header('Location: index.php');
 										}else {
 											echo "User not found, please try again.";
+											$password = password_hash($password, PASSWORD_DEFAULT);
 											require_once "logging.php";
 											auditlog($myDBconnection,"Login Attempt Failed", 1, $username, $password, "NULL", "NULL");
 											session_unset($_SESSION["MySession"]);

@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+<?php require "cookie.php"; ?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -86,6 +86,7 @@
 							
 							if(strlen($_POST['user']) > 30 || strlen($_POST['psw']) > 50 || strlen($_POST['answer']) > 50) {
 								echo "<p>Maximum character limit has been reached!</p>";
+								$password = password_hash($password, PASSWORD_DEFAULT);
 								require_once "logging.php";
 								auditlog($myDBconnection, "Register Attempt Exceeded Character Limit", 2, $username, $password, $question, $answer);
 							} else {
@@ -112,8 +113,9 @@
 										if (empty($results)) {
 											//echo "test7";
 											try {
+												$password = password_hash($password, PASSWORD_DEFAULT);
 												//Check if table has the same fields & spelled the same way
-												$query = 'INSERT INTO users (user_name,password,security_question,answer) VALUES (:user_name,:password,:security_question,:answer);';
+												$query = 'INSERT INTO users (user_name, password, security_question, answer, admin) VALUES (:user_name,:password,:security_question,:answer, "N");';
 												$statement = $myDBconnection -> prepare($query);
 												$statement -> bindValue(":user_name", $username);
 												$statement -> bindValue(":password", $password);

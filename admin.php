@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php 
+require "cookie.php"; 
+if ($admin == True){
+} else {
+	header('Location:index.php');
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +12,7 @@
     Admin Page
     Author: Sabrina Hill
 
-    Filename: index.php
+    Filename: admin.php
    -->
    <meta charset="utf-8"/>
     <title>Hill: Web Security</title>
@@ -14,13 +20,9 @@
 <body>
 	<header>
 		<nav>
-			<ul>
-				<li><a href="index.php">Home</a></li>
-				<li><a href="login.php">Log in</a></li>
-				<li><a href="logout.php">Logout</a></li>
-				<li><a href="registration.php">Registration</a></li>
-				<li><a href="admin.php">Admin</a></li>
-			</ul>
+			<?php
+				require "nav.php";
+			?>
 		</nav>
 	</header>
 	<main>
@@ -34,7 +36,7 @@
 			}
 			
 			try {
-				$query = "SELECT user_name FROM users" ; 
+				$query = "SELECT user_name FROM users WHERE admin = 'N';"; 
 				$dbquery = $myDBconnection -> prepare($query);
 				$dbquery -> execute();						
 				$results = $dbquery -> fetchAll();
