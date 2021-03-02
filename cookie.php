@@ -2,9 +2,9 @@
 require "database.php";
 $loggedIn = False;
 $Admin = False;
-if(isset($_COOKIE['Authentication'])) {
+if(isset($_COOKIE['Auth'])) {
     try {
-        $token = $_COOKIE['Authentication'];
+        $token = $_COOKIE['Auth'];
         $query = 'SELECT * FROM Cookies WHERE Token = :token AND Expiration > NOW();';
         $dbquery = $myDBconnection -> prepare($query);
         $dbquery -> bindValue(':token', $token); 

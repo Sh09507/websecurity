@@ -76,6 +76,7 @@
 							} else {
 								if(strlen($_POST['password']) < 10) {
 									echo "<p>Password is too short!</p>";
+									$password = password_hash($password, PASSWORD_DEFAULT);
 									require_once "logging.php";
 									auditlog($myDBconnection, "Login Attempt had too short of a password", 2, $username, $password, "NULL", "NULL");
 								} else {
@@ -112,8 +113,6 @@
 											$password = password_hash($password, PASSWORD_DEFAULT);
 											require_once "logging.php";
 											auditlog($myDBconnection,"Login Attempt Failed", 1, $username, $password, "NULL", "NULL");
-											session_unset($_SESSION["MySession"]);
-											session_destroy();
 										}
 									} else { //not all sanitized variables have values
 										echo "<p>Bad data was inserted into the fields.</p>";
