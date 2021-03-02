@@ -71,7 +71,7 @@
 			if(isset($_POST["recover"])){ 
 				
 				//are all the fields filled out?
-				if( !(empty($_POST["user"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"] && !(empty($_POST["password"]))) {
+				if( !(empty($_POST["user"])) && !(empty($_POST["question"])) && !(empty($_POST["answer"])) && !(empty($_POST["password"]))) {
 						
 					//put all POST values into variables
 					$username = $_POST["user"];
