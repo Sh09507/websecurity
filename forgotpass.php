@@ -89,42 +89,48 @@
 						$password = password_hash($password, PASSWORD_DEFAULT);
 						require_once "logging.php";
 						auditlog($myDBconnection, "Recovery Attempt Exceeded Character Limit", 2, $username, $password, $question, $answer);
-					} else {					
-						//do all the sanitized variables still have a value?
-						if(  $username != "" && $question != "" && $answer != "" && $password != "" ) {
-							try {
-								//check to see if your table has the same fields & is spelled the same way
-								$query = 'SELECT user_name, password, security_question, answer FROM users WHERE user_name = :username AND
-								security_question = :question AND answer = :answer;';
-								$statement = $myDBconnection -> prepare($query);
-								$statement -> bindValue(':username', $username); 
-								$statement -> bindValue(':question', $question);
-								$statement -> bindValue(':answer', $answer);
-								$statement -> execute();
-								$result = $statement -> fetch();
-							} catch (PDOException $e) {
-								$error_message = $e->getMessage();
-								echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
+					} else {
+						if(strlen($_POST['password']) < 10) {
+							echo "<p>Password is too short!</p>";
+							require_once "logging.php";
+							auditlog($myDBconnection, "Changed password Attempt was too short", 2, $username, $password, $question, $answer);
+						} else {				
+							//do all the sanitized variables still have a value?
+							if(  $username != "" && $question != "" && $answer != "" && $password != "" ) {
+								try {
+									//check to see if your table has the same fields & is spelled the same way
+									$query = 'SELECT user_name, password, security_question, answer FROM users WHERE user_name = :username AND
+									security_question = :question AND answer = :answer;';
+									$statement = $myDBconnection -> prepare($query);
+									$statement -> bindValue(':username', $username); 
+									$statement -> bindValue(':question', $question);
+									$statement -> bindValue(':answer', $answer);
+									$statement -> execute();
+									$result = $statement -> fetch();
+								} catch (PDOException $e) {
+									$error_message = $e->getMessage();
+									echo "<p>An error occurred while trying to retrieve data from the table: $error_message </p>";
+								}
+								//Does the username match the data in the table? 
+								if (!empty($result)) {
+									$password = password_hash($password, PASSWORD_DEFAULT);
+									$query = 'UPDATE users SET password = :password WHERE user_name = :username;';
+									$statement = $myDBconnection -> prepare($query);
+									$statement -> bindValue(':username', $username); 
+									$statement -> bindValue(':password', $password);
+									$statement -> execute();
+									echo "Password has been updated. Please try Logging in.";
+									require_once "logging.php";
+									auditlog($myDBconnection,"User Password Changed", 1, $username,$password, $question, $answer);
+								}else {
+									echo "Invalid credentials. Try again.";
+									$password = password_hash($password, PASSWORD_DEFAULT);
+									require_once "logging.php";
+									auditlog($myDBconnection,"Password Recovery Failed", 1, $username,$password, $question, $answer);
+								}
+							} else { //not all sanitized variables have values
+								echo "<p>Bad data was inserted into the fields.</p>";
 							}
-							//Does the username match the data in the table? 
-							if (!empty($result)) {
-								$password = password_hash($password, PASSWORD_DEFAULT);
-								$query = 'UPDATE users SET password = :password WHERE user_name = :username;';
-								$statement = $myDBconnection -> prepare($query);
-								$statement -> bindValue(':username', $username); 
-								$statement -> bindValue(':password', $password);
-								$statement -> execute();
-								echo "Password has been updated. Please try Logging in.";
-								require_once "logging.php";
-								auditlog($myDBconnection,"User Password Changed", 1, $username,$password, $question, $answer);
-							}else {
-								echo "Invalid credentials. Try again.";
-								$password = password_hash($password, PASSWORD_DEFAULT);
-								require_once "logging.php";
-								auditlog($myDBconnection,"Password Recovery Failed", 1, $username,$password, $question, $answer);
-							}
-						} else { //not all sanitized variables have values
-							echo "<p>Bad data was inserted into the fields.</p>";
 						}
 					}						
 				} else { //not all fields were filled in
