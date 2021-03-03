@@ -58,7 +58,7 @@ if ($admin == True){
 			$d = 'delete' . $value['user_name'];
 			if(isset($_POST[$d])) {
 				try {
-					$query = 'DELETE FROM users WHERE user_name = :username;';
+					$query = 'DELETE FROM users WHERE user_name = :username AND admin = "N";';
 					$dbquery = $myDBconnection -> prepare($query);
 					//echo "test";
 					$dbquery -> bindValue(':username', $value['user_name']); 
