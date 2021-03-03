@@ -82,7 +82,7 @@
 					$username = sani($username);
 					$question = sani($question);
 					$answer = sani($answer);
-					$password = sani("password");
+					$password = sani($password);
 					
 					if(strlen($_POST['user']) > 30 || strlen($_POST['answer']) > 50 || strlen($_POST['password']) > 50) {
 						echo "<p>Maximum character limit has been reached!</p>";
