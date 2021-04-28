@@ -30,7 +30,7 @@
 			$query = "SELECT ID, title, user_name FROM discussion_topics;";
 			$dbquery = $myDBconnection -> prepare($query);
 			$dbquery -> execute();
-			$result = $dbquery -> fetch();
+			$results = $dbquery -> fetchAll();
 		} catch (PDOException $e) {
 					$error_message = $e -> getMessage();
 					echo $error_message . "<br>";
@@ -38,7 +38,7 @@
 				foreach ($results as &$arr) {
 		?>
 			<li>
-				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr["user_name"];?></a>
+				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr['user_name'];?></a>
 			</li>
 		<?php }?> 
 		</ul>

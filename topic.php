@@ -34,7 +34,7 @@
 				$dbquery = $myDBconnection -> prepare($query);
 				$dbquery = $bindvalue(':id', $t);
 				$dbquery -> execute();
-				$result = $dbquery -> fetch();
+				$results = $dbquery -> fetchAll();
 			} catch (PDOException $e) {
 						$error_message = $e -> getMessage();
 						echo $error_message . "<br>";
