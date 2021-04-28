@@ -16,6 +16,7 @@ if ($pwdrec == False) {
 	   <label id ="psw"><b>New Password: </b></label>
 		<input type="password" name="password" placeholder="Enter New Password" maxlength="50" pattern=".{10,}" required>
 	</fieldset>
+	<input type="submit" value="Change Password" name="recover">
 </form>
 
 <?php
@@ -68,6 +69,7 @@ if ($pwdrec == False) {
 						$statement -> bindValue(':password', $password);
 						$statement -> execute();
 						echo "Password has been updated. Please try Logging in.";
+						setcookie('Pwdcookie', $token, time() - 3600, "/");
 						require_once "logging.php";
 						auditlog($myDBconnection,"User Password Changed", 1, $pwdrecUser, $password, NULL, NULL);
 				} else { //not all sanitized variables have values
