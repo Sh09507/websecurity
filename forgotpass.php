@@ -121,14 +121,13 @@
 						} else { //not all sanitized variables have values
 							echo "<p>Bad data was inserted into the fields.</p>";
 						}
-					}
-				}						
-			} else { //not all fields were filled in
-				echo "<p>Not all fields were filled in.</p>";
+					}						
+				} else { //not all fields were filled in
+					echo "<p>Not all fields were filled in.</p>";
+				}
+			} else { //form not submitted
+				echo "<p>Form has not been submitted yet.</p>";
 			}
-		} else { //form not submitted
-			echo "<p>Form has not been submitted yet.</p>";
-		}
 	?>
 </body>
 </html>
