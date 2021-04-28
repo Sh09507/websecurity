@@ -110,7 +110,7 @@
 									$dbquery -> bindValue(':body', $sbody);
 									$dbquery -> bindValue(':img', $simg);
 									$dbquery -> execute();
-									//header('Location:index.php');
+									header('Location:index.php');
 								} catch (PDOException $e) {
 									$error_message = $e -> getMessage();
 									echo $error_message . "<br>";
