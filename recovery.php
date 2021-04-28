@@ -11,6 +11,13 @@ if ($pwdrec == False) {
 
     Filename: forgotpass.php
    -->
+<header>
+	<nav>
+		<?php
+			require "nav.php";
+		?>
+	</nav>
+</header>
 <form method="post">
 	<fieldset>   
 	   <label id ="psw"><b>New Password: </b></label>
