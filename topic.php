@@ -31,12 +31,17 @@
 				print $error_message . "<br>";
 			}
 			try{
+				echo "t is: " . $t;
 				$query = "SELECT ID, title, user_name, body, image FROM discussion_topics WHERE ID = :id;";
 				$dbquery = $myDBconnection -> prepare($query);
 				$dbquery -> bindvalue(':id', $t);
 				$dbquery -> execute();
 				$results = $dbquery -> fetchAll();
-				echo "here are the results: " . $results;
+				echo "here are the results: " . $results["ID"];
+				echo $results["title"];
+				echo $results["user_name"];
+				echo $results["body"];
+				echo $results["image"];
 			} catch (PDOException $e) {
 						$error_message = $e -> getMessage();
 						echo $error_message . "<br>";
