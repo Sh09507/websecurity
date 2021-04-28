@@ -33,7 +33,7 @@
 			try{
 				$query = "SELECT ID, title, user_name, body, image FROM discussion_topics WHERE ID = :id;";
 				$dbquery = $myDBconnection -> prepare($query);
-				$dbquery -> $bindvalue(':id', $t);
+				$dbquery -> bindvalue(':id', $t);
 				$dbquery -> execute();
 				$results = $dbquery -> fetchAll();
 			} catch (PDOException $e) {
