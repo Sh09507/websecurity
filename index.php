@@ -106,7 +106,7 @@
 							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
-									echo "query";
+									echo "<br>query";
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
 									$dbquery = $myDBconnection -> prepare($query);
 									$dbquery -> bindValue(':user', $user);
