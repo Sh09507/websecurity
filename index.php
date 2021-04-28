@@ -91,6 +91,7 @@
 						if ($ext)    
 						{           
 							move_uploaded_file($_FILES['image']['tmp_name'], $file);   
+							echo "<br>image upload attempted";
 						}    
 						else{ 
 							echo "'$simg' is not an accepted image file"; 
@@ -101,6 +102,7 @@
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
 							$sbody = sani($_POST['body']);
+							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
