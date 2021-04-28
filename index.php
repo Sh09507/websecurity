@@ -23,9 +23,11 @@
 	</header>
 	<main>
 		<h2>Discussion Topics</h2>
+		<ul>
 		<?php
+		require_once 'database.php';
 		try{
-			$query = "SELECT ID, title, user_name FROM discussion_topics"
+			$query = "SELECT ID, title, user_name FROM discussion_topics;";
 			$dbquery = $myDBconnection -> prepare($query);
 			$dbquery -> execute();
 			$result = $dbquery -> fetch();
@@ -35,14 +37,13 @@
 				}
 				foreach ($results as &$arr) {
 		?>
-		<ul>
 			<li>
 				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr[user_name];?></a>
 			</li>
+		<?php }?> 
 		</ul>
-	<?php 
-		if(loggedIn == True){
-	?>
+		<?php if(loggedIn == True){
+		?>
 	<!--
 		lines 37-46 code reference come from the description.php page of Web Programming assignment 5 lines 111-172
 	-->
@@ -54,7 +55,7 @@
 			<fieldset>
 			<legend>Create a post</legend>
 				<input type="text" name="title" id="titlebox" placeholder="Title">
-				<textarea type="text" name="rtext" rows = "5" cols="80" placeholder="What's on your mind?"></textarea>
+				<textarea type="text" name="body" rows = "5" cols="80" placeholder="What's on your mind?"></textarea>
 				<input type="file" value="Choose File" name="image"><br>
 			</fieldset>
 			<input type="submit" name="submit" value="Post Review" />
@@ -76,7 +77,7 @@
 			}
 			if(isset($_POST['submit'])) {
 			//is form submitted?
-				if( !empty($_FILES['image'] )){
+				if( !empty($_FILES['image']['name'])){
 					$simg = sani( $_FILES['image']['name'] );    
 					$file = "images/" . $_FILES['image']['name'];    
 						switch($_FILES['image']['type'])    
@@ -113,13 +114,11 @@
 									$error_message = $e -> getMessage();
 									echo $error_message . "<br>";
 								}	
-							}else {
-								echo "Sorry, image could not be uploaded. Please try again.";
 							}
 						}
-					} /*else {
-						echo "Not all fields passed sanitization";
-					}*/
+					}else {
+						echo "Sorry, image could not be uploaded. Please try again.";
+					}
 				} /*else {
 					echo "Image not uploaded.";
 				}*/
