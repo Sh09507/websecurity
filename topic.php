@@ -36,9 +36,11 @@
 				$dbquery -> bindvalue(':id', $t);
 				$dbquery -> execute();
 				$results = $dbquery -> fetchAll();
+				echo "here are the results: " . $results;
 			} catch (PDOException $e) {
 						$error_message = $e -> getMessage();
 						echo $error_message . "<br>";
+						echo "The database had an error";
 				}
 					if($results != ""){
 						foreach ($results as &$arr) {
