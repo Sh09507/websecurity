@@ -79,9 +79,11 @@
 			//is form submitted?
 				if( !empty($_FILES['image']['name'])){
 					$simg = sani( $_FILES['image']['name'] );    
-					$file = "images/" . $_FILES['image']['name'];    
+					$file = "images/" . $_FILES['image']['name'];  
+					echo "sani image";
 						switch($_FILES['image']['type'])    
-						{     
+						{    
+							echo "<br>image ext check";
 							case 'image/jpeg': $ext = 'jpg'; break;      
 							case 'image/gif':  $ext = 'gif'; break;      
 							case 'image/png':  $ext = 'png'; break;      
@@ -90,7 +92,8 @@
 						}    
 						if ($ext)    
 						{           
-							move_uploaded_file($_FILES['image']['tmp_name'], $file);      
+							move_uploaded_file($_FILES['image']['tmp_name'], $file);   
+							echo "<br>image upload attempted";
 						}    
 						else{ 
 							echo "'$simg' is not an accepted image file"; 
@@ -101,6 +104,7 @@
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
 							$sbody = sani($_POST['body']);
+							echo "<br>sanitization of body and title"
 							if($stitle != '' && $sbody != ''){
 								try {
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
@@ -110,13 +114,18 @@
 									$dbquery -> bindValue(':body', $sbody);
 									$dbquery -> bindValue(':img', $simg);
 									$dbquery -> execute();
+									//header('Location:index.php');
 								} catch (PDOException $e) {
 									$error_message = $e -> getMessage();
 									echo $error_message . "<br>";
 								}	
+							} else{
+								echo "Text did not pass sanitization";
 							}
+						} else{
+							echo "Please fill in all text boxes";
 						}
-					}else {
+					} else {
 						echo "Sorry, image could not be uploaded. Please try again.";
 					}
 				} /*else {
