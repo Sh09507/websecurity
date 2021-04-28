@@ -107,6 +107,11 @@
 							if($stitle != '' && $sbody != ''){
 								try {
 									echo "<br>query";
+									echo "<br>$user";
+									echo "<br>$stitle";
+									echo "<br>$sbody";
+									echo "<br>$simg";
+									echo "<br>$file";
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
 									$dbquery = $myDBconnection -> prepare($query);
 									$dbquery -> bindValue(':user', $user);
