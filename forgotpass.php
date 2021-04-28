@@ -53,7 +53,7 @@
 		//Connect to DB
 			require_once 'database.php'; 
 			try {
-				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME);
+				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();
 				print $error_message . "<br>";
