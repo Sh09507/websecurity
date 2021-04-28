@@ -104,7 +104,7 @@
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
 							$sbody = sani($_POST['body']);
-							echo "<br>sanitization of body and title"
+							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
@@ -120,20 +120,18 @@
 									echo $error_message . "<br>";
 								}	
 							} else{
-								echo "Text did not pass sanitization";
+								echo "Text did not pass sanitization.";
 							}
 						} else{
-							echo "Please fill in all text boxes";
+							echo "Please fill in all text boxes.";
 						}
 					} else {
 						echo "Sorry, image could not be uploaded. Please try again.";
 					}
-				} /*else {
-					echo "Image not uploaded.";
-				}*/
-			} /*else {
-				echo "The form has not been submitted.";
-			}*/
+				} else{
+					echo "No image was uploaded.";
+				}
+			} 
 		}
 		?>		
 	</main>
