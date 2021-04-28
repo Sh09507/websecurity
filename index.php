@@ -42,7 +42,7 @@
 			</li>
 		<?php }?> 
 		</ul>
-		<?php if(loggedIn == True){
+		<?php if($loggedIn == True){
 		?>
 	<!--
 		lines 37-46 code reference come from the description.php page of Web Programming assignment 5 lines 111-172
