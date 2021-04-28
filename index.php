@@ -80,6 +80,7 @@
 				if( !empty($_FILES['image']['name'])){
 					$simg = sani( $_FILES['image']['name'] );    
 					$file = "images/" . $_FILES['image']['name'];  
+					echo "sani image";
 						switch($_FILES['image']['type'])    
 						{    
 							case 'image/jpeg': $ext = 'jpg'; break;      
@@ -91,18 +92,27 @@
 						if ($ext)    
 						{           
 							move_uploaded_file($_FILES['image']['tmp_name'], $file);   
+							echo "<br>image upload attempted";
 						}    
 						else{ 
 							echo "'$simg' is not an accepted image file"; 
 							$simg = "";
 						}
 					if($simg != ""){
+						echo "<br>$loggedInUser";
 						$user = $loggedInUser;
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
 							$sbody = sani($_POST['body']);
+							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
+									echo "<br>query";
+									echo "<br>$user";
+									echo "<br>$stitle";
+									echo "<br>$sbody";
+									echo "<br>$simg";
+									echo "<br>$file";
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
 									$dbquery = $myDBconnection -> prepare($query);
 									$dbquery -> bindValue(':user', $user);
