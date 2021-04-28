@@ -14,6 +14,7 @@
 
 <body>
 	<header>
+		<h1>Welcome to the Topic page!</h1>
 		<nav>
 			<?php
 				require "nav.php";
@@ -35,6 +36,7 @@
 				$dbquery = $bindvalue(':id', $t);
 				$dbquery -> execute();
 				$results = $dbquery -> fetchAll();
+				echo "These are the results: " . $results;
 			} catch (PDOException $e) {
 						$error_message = $e -> getMessage();
 						echo $error_message . "<br>";
