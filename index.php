@@ -38,7 +38,7 @@
 				foreach ($results as &$arr) {
 		?>
 			<li>
-				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr[user_name];?></a>
+				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr["user_name"];?></a>
 			</li>
 		<?php }?> 
 		</ul>
@@ -58,7 +58,7 @@
 				<textarea type="text" name="body" rows = "5" cols="80" placeholder="What's on your mind?"></textarea><br>
 				<input type="file" value="Choose File" name="image"><br>
 			</fieldset>
-			<input type="submit" name="submit" value="Post Review" />
+			<input type="submit" name="submit" value="Post" />
 		</form>
 		<!--
 		Lines 50-111 code from Web Programming Hawkins Assignment 5 profile.php 4/29/2020 Lines 82-143.
@@ -80,7 +80,6 @@
 				if( !empty($_FILES['image']['name'])){
 					$simg = sani( $_FILES['image']['name'] );    
 					$file = "images/" . $_FILES['image']['name'];  
-					echo "sani image";
 						switch($_FILES['image']['type'])    
 						{    
 							case 'image/jpeg': $ext = 'jpg'; break;      
@@ -92,10 +91,8 @@
 						if ($ext)    
 						{           
 							move_uploaded_file($_FILES['image']['tmp_name'], $file);   
-							echo "<br>image upload attempted";
 						}    
 						else{ 
-							echo "'$simg' is not an accepted image file"; 
 							$simg = "";
 						}
 					if($simg != ""){
@@ -104,15 +101,8 @@
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
 							$sbody = sani($_POST['body']);
-							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
-									echo "<br>query";
-									echo "<br>$user";
-									echo "<br>$stitle";
-									echo "<br>$sbody";
-									echo "<br>$simg";
-									echo "<br>$file";
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
 									$dbquery = $myDBconnection -> prepare($query);
 									$dbquery -> bindValue(':user', $user);
@@ -120,7 +110,7 @@
 									$dbquery -> bindValue(':body', $sbody);
 									$dbquery -> bindValue(':img', $simg);
 									$dbquery -> execute();
-									//header('Location:index.php');
+									header('Location:index.php');
 								} catch (PDOException $e) {
 									$error_message = $e -> getMessage();
 									echo $error_message . "<br>";
