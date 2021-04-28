@@ -54,8 +54,8 @@
 		<form method="post" action="index.php" enctype='multipart/form-data'>
 			<fieldset>
 			<legend>Create a post</legend>
-				<input type="text" name="title" id="titlebox" placeholder="Title">
-				<textarea type="text" name="body" rows = "5" cols="80" placeholder="What's on your mind?"></textarea>
+				<input type="text" name="title" id="titlebox" placeholder="Title"> <br>
+				<textarea type="text" name="body" rows = "5" cols="80" placeholder="What's on your mind?"></textarea><br>
 				<input type="file" value="Choose File" name="image"><br>
 			</fieldset>
 			<input type="submit" name="submit" value="Post Review" />
