@@ -47,7 +47,7 @@ if ($pwdrec == False) {
 		
 			$password = sani($password);
 			
-			if(strlen(strlen($_POST['password']) > 50) {
+			if(strlen($_POST['password']) > 50) {
 				echo "<p>Maximum character limit has been reached!</p>";
 				$password = password_hash($password, PASSWORD_DEFAULT);
 				require_once "logging.php";
