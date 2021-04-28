@@ -99,6 +99,7 @@
 							$simg = "";
 						}
 					if($simg != ""){
+						echo "<br>$loggedInUser";
 						$user = $loggedInUser;
 						if(!empty($_POST['title']) && !empty($_POST['body'])){
 							$stitle = sani($_POST['title']);
