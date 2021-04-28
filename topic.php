@@ -20,10 +20,7 @@
 				require "nav.php";
 			?>
 		</nav>
-	</header>
-	<main>
-		<p>Topic pages are pending...</p>
-	</main>
+	</header>	
 </body>
 
 </html>

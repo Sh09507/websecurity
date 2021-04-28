@@ -20,32 +20,32 @@
 	</header>
 	<main>
 		<article>  
-				<form method="post">
-					<fieldset id="reginfo">
-						<legend>Please enter your details to register.</legend>
-						<br>
-						<label id="user"><b>User Name: </b></label>
-						<input type="text" placeholder="Enter User Name" name="user" maxlength="30" required>
-						<br>
-						<label id="question"><b>Security Question: </b></label>
-						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
-						<datalist id="questionOptions">                 
-							<option value="What is the name of the town where you were born?"></option>       
-							<option value="Who was your childhood hero?"></option>    
-							<option value="Where was your best family vacation as a kid?"></option>    
-							<option value="What is the name of your first pet?"></option>    
-							<option value="What was your first car?"></option>       
-						</datalist> 
-						<br>
-						<label id="answer"><b>Security Answer: </b></label>
-						<input type="text" name="answer" maxlength="50" required>
-						<br>
-						<label id ="psw"><b>New Password: </b></label>
-						<input type="password" name="password" placeholder="Enter New Password" maxlength="50" pattern=".{10,}" required>
+			<form method="post">
+				<fieldset id="reginfo">
+					<legend>Please enter your details to register.</legend>
+					<br>
+					<label id="user"><b>User Name: </b></label>
+					<input type="text" placeholder="Enter User Name" name="user" maxlength="30" required>
+					<br>
+					<label id="question"><b>Security Question: </b></label>
+					<input type="text" list="questionOptions" id="q" name="question" class="question"required>
+					<datalist id="questionOptions">                 
+						<option value="What is the name of the town where you were born?"></option>       
+						<option value="Who was your childhood hero?"></option>    
+						<option value="Where was your best family vacation as a kid?"></option>    
+						<option value="What is the name of your first pet?"></option>    
+						<option value="What was your first car?"></option>       
+					</datalist> 
+					<br>
+					<label id="answer"><b>Security Answer: </b></label>
+					<input type="text" name="answer" maxlength="50" required>
+					<br>
+					<label id ="psw"><b>New Password: </b></label>
+					<input type="password" name="password" placeholder="Enter New Password" maxlength="50" pattern=".{10,}" required>
 
-					</fieldset>
-					<input type="submit" value="Change Password" name="recover">
-				</form>
+				</fieldset>
+				<input type="submit" value="Change Password" name="recover">
+			</form>
 		</article>
 	</main>
 	

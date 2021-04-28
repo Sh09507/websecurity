@@ -5,7 +5,6 @@
 <!--
     Home Page
     Author: Sabrina Hill
-    Due Date:   2/6/2020
 
     Filename: index.php
    -->
@@ -24,13 +23,111 @@
 	</header>
 	<main>
 		<h2>Discussion Topics</h2>
+		<?php
+		try{
+			$query = "SELECT ID, title, user_name FROM discussion_topics"
+			$dbquery = $myDBconnection -> prepare($query);
+			$dbquery -> execute();
+			$result = $dbquery -> fetch();
+		} catch (PDOException $e) {
+					$error_message = $e -> getMessage();
+					echo $error_message . "<br>";
+				}
+				foreach ($results as &$arr) {
+		?>
 		<ul>
-			<li><a href="topic.php?t=1">How to not break the bank playing gacha games.</a></li>
-			<li><a href="topic.php?t=2">Why do I love Nagito so much?</a></li>
-			<li><a href="topic.php?t=3">Anime Recommendations</a></li>
-			<li><a href="topic.php?t=4">Why sonic is the best</a></li>
-			<li><a href="topic.php?t=5">9s appreciation post</a></li>
+			<li>
+				<a href="topic.php?t=<?php echo $arr['ID']; ?>"><?php echo $arr['title'] . " by " . $arr[user_name];?></a>
+			</li>
 		</ul>
+	<?php 
+		if(loggedIn == True){
+	?>
+	<!--
+		lines 37-46 code reference come from the description.php page of Web Programming assignment 5 lines 111-172
+	-->
+		<main>
+		<!--
+		line 53 code reference came from Hawkins Web Programming lab 12 attractions.php line 65
+		-->
+		<form method="post" action="index.php" enctype='multipart/form-data'>
+			<fieldset>
+			<legend>Create a post</legend>
+				<input type="text" name="title" id="titlebox" placeholder="Title">
+				<textarea type="text" name="rtext" rows = "5" cols="80" placeholder="What's on your mind?"></textarea>
+				<input type="file" value="Choose File" name="image"><br>
+			</fieldset>
+			<input type="submit" name="submit" value="Post Review" />
+		</form>
+		<!--
+		Lines 50-111 code from Web Programming Hawkins Assignment 5 profile.php 4/29/2020 Lines 82-143.
+		-->
+		<?php 
+			require_once 'database.php'; 
+			try {
+				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
+			} catch (PDOException $e) {
+				$error_message = $e->getMessage();
+				print $error_message . "<br>";
+			}
+			function sani($bad){
+				$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
+				return $good;
+			}
+			if(isset($_POST['submit'])) {
+			//is form submitted?
+				if( !empty($_FILES['image'] )){
+					$simg = sani( $_FILES['image']['name'] );    
+					$file = "images/" . $_FILES['image']['name'];    
+						switch($_FILES['image']['type'])    
+						{     
+							case 'image/jpeg': $ext = 'jpg'; break;      
+							case 'image/gif':  $ext = 'gif'; break;      
+							case 'image/png':  $ext = 'png'; break;      
+							case 'image/tiff': $ext = 'tif'; break;      
+							default:           $ext = '';    break;    
+						}    
+						if ($ext)    
+						{           
+							move_uploaded_file($_FILES['image']['tmp_name'], $file);      
+						}    
+						else{ 
+							echo "'$simg' is not an accepted image file"; 
+							$simg = "";
+						}
+					if($simg != ""){
+						$user = $loggedInUser;
+						if(!empty($_POST['title']) && !empty($_POST['body'])){
+							$stitle = sani($_POST['title']);
+							$sbody = sani($_POST['body']);
+							if($stitle != '' && $sbody != ''){
+								try {
+									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
+									$dbquery = $myDBconnection -> prepare($query);
+									$dbquery -> bindValue(':user', $user);
+									$dbquery -> bindValue(':title', $stitle);
+									$dbquery -> bindValue(':body', $sbody);
+									$dbquery -> bindValue(':img', $simg);
+									$dbquery -> execute();
+								} catch (PDOException $e) {
+									$error_message = $e -> getMessage();
+									echo $error_message . "<br>";
+								}	
+							}else {
+								echo "Sorry, image could not be uploaded. Please try again.";
+							}
+						}
+					} /*else {
+						echo "Not all fields passed sanitization";
+					}*/
+				} /*else {
+					echo "Image not uploaded.";
+				}*/
+			} /*else {
+				echo "The form has not been submitted.";
+			}*/
+		}
+		?>		
 	</main>
 </body>
 
