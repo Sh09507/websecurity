@@ -83,7 +83,6 @@
 					echo "sani image";
 						switch($_FILES['image']['type'])    
 						{    
-							echo "<br>image ext check";
 							case 'image/jpeg': $ext = 'jpg'; break;      
 							case 'image/gif':  $ext = 'gif'; break;      
 							case 'image/png':  $ext = 'png'; break;      
@@ -107,6 +106,7 @@
 							echo "<br>sanitization of body and title";
 							if($stitle != '' && $sbody != ''){
 								try {
+									echo "query";
 									$query = "INSERT INTO discussion_topics (user_name, title, body, image, date_added) VALUES (:user, :title, :body, :img, NOW());";
 									$dbquery = $myDBconnection -> prepare($query);
 									$dbquery -> bindValue(':user', $user);
