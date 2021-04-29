@@ -39,15 +39,16 @@
 	<?php
 		//Connect to DB
 			require_once 'database.php'; 
+			// lines 43-47 was code referenced from Hawkins Web programming Lab 14 index.php
 			try {
 				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();
 				print $error_message . "<br>";
 			}
-				
+			//sanatization is referenced from my web programming Assignment 5 that Hawkins helped with, and the this assignment took reference code from web programming lab 16 
 			//sanitize function (to clean up malicious data)
-			function sanitize($bad){
+			function sani($bad){
 				$bad = stripslashes($bad);
 				$bad = strip_tags($bad);
 				$good = htmlentities($bad);
@@ -65,9 +66,9 @@
 					$password = $_POST["password"];
 						
 					//sanitize each of the fields (send each field to the sanitize function)
-					$username = sanitize($username);
-					$password = sanitize($password);
-					
+					$username = sani($username);
+					$password = sani($password);
+	
 					if(strlen($_POST['username']) > 30 || strlen($_POST['password']) > 50) {
 								echo "<p>Maximum character limit has been reached!</p>";
 								$password = password_hash($password, PASSWORD_DEFAULT);
@@ -76,6 +77,7 @@
 							} else {
 								if(strlen($_POST['password']) < 10) {
 									echo "<p>Password is too short!</p>";
+									//  Line 87 Was taught this semester by Thackston
 									$password = password_hash($password, PASSWORD_DEFAULT);
 									require_once "logging.php";
 									auditlog($myDBconnection, "Login Attempt had too short of a password", 2, $username, $password, "NULL", "NULL");
@@ -96,6 +98,7 @@
 										//Does the username match the data in the table? 
 										if (!empty($result) && password_verify($password, $result['password'])) {
 											echo "Welcome back";
+											//  Line 101 Was shown in class this semester by Thackston
 											$token = bin2hex(random_bytes(15));
 											$query = 'INSERT INTO Cookies (user_name, Token, Expiration, admin) VALUES (:username, :token, DATE_ADD(NOW(), INTERVAL 7 DAY), :admin);';
 											$statement = $myDBconnection -> prepare($query);
@@ -103,6 +106,7 @@
 											$statement -> bindValue(':token', $token);
 											$statement -> bindValue(':admin', $result['admin']);
 											$statement -> execute();
+											//  Line 109 Was shown in class this semester by Thackston
 											setcookie('Auth', $token, time() + (86400 * 7), "/");
 											$password = password_hash($password, PASSWORD_DEFAULT);
 											require_once "logging.php";

@@ -17,6 +17,7 @@ if(isset($_COOKIE['Auth'])) {
                 $admin = True;
             }
         }
+	// lines 21-23 was code referenced from Hawkins Web programming Lab 14 index.php
     } catch (PDOException $e) {
         $error_message = $e->getMessage();
     }
@@ -34,8 +35,9 @@ if(isset($_COOKIE['Pwdcookie'])) {
 			$pwdrecUser = $result["user_name"];
             $pwdrec = True;
         }
+	// lines 39-41 was code referenced from Hawkins Web programming Lab 14 index.php
     } catch (PDOException $e) {
-        $error_message = $e->getMessage();
+        $error_message = $e -> getMessage();
     }
 }
 ?>

@@ -17,6 +17,7 @@ function auditlog($myDBconnection, $event, $serverity, $username, $password, $qu
 		$statement -> bindValue(":security_question", $question);
 		$statement -> bindValue(":answer", $answer);
 		$statement -> execute();
+	/// lines 21-24 was code referenced from Hawkins Web programming Lab 14 index.php 
 	} catch (PDOException $e) {
 		$error_message = $e->getMessage();
 		echo "An error occurred while selecting data from the table: $error_message";

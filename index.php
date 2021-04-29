@@ -44,12 +44,10 @@
 		</ul>
 		<?php if($loggedIn == True){
 		?>
-	<!--
-		lines 37-46 code reference come from the description.php page of Web Programming assignment 5 lines 111-172
-	-->
+
 		<main>
 		<!--
-		line 53 code reference came from Hawkins Web Programming lab 12 attractions.php line 65
+		line 52 code reference came from Hawkins Web Programming lab 12 attractions.php line 65
 		-->
 		<form method="post" action="index.php" enctype='multipart/form-data'>
 			<fieldset>
@@ -60,17 +58,16 @@
 			</fieldset>
 			<input type="submit" name="submit" value="Post" />
 		</form>
-		<!--
-		Lines 50-111 code from Web Programming Hawkins Assignment 5 profile.php 4/29/2020 Lines 82-143.
-		-->
 		<?php 
 			require_once 'database.php'; 
+			// lines 64-69 was code referenced from Hawkins Web programming Lab 14 index.php 
 			try {
 				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 			} catch (PDOException $e) {
 				$error_message = $e->getMessage();
 				print $error_message . "<br>";
 			}
+			// lines 71-74 code references hawkins Web programming Lab 16 index.php
 			function sani($bad){
 				$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
 				return $good;
@@ -80,6 +77,7 @@
 				if( !empty($_FILES['image']['name'])){
 					$simg = sani( $_FILES['image']['name'] );    
 					$file = "images/" . $_FILES['image']['name'];  
+						// Used for Web Programming lab 12 attractions.php with help from Hawkins
 						switch($_FILES['image']['type'])    
 						{    
 							case 'image/jpeg': $ext = 'jpg'; break;      

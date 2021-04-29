@@ -31,8 +31,11 @@
 						<label id="psw"><b>Password: </b></label>
 						<input type="password" placeholder="Enter Password" name="psw" maxlength="50" pattern=".{10,}" required>
 						<br>
+						<!--
+							Lines 38-45 are code from Web programming assignment 5 profile.php values just changes from numbers to questions
+						-->
 						<label id="question"><b>Security Question: </b></label>
-						<input type="text" list="questionOptions" id="q" name="question" class="question"required>
+						<input type="text" list="questionOptions" id="q" name="question" required>
 						<datalist id="questionOptions">                 
 							<option value="What is the name of the town where you were born?"></option>       
 							<option value="Who was your childhood hero?"></option>    
@@ -50,6 +53,7 @@
 				<?php
 				//echo "test1";
 					//connection info
+					// lines 44-60 was code referenced from Hawkins Web programming Lab 14 index.php 
 					require_once 'database.php'; 				
 					try {
 						$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
@@ -58,7 +62,9 @@
 						print $error_message . "<br>";
 					}
 					//echo "test2";
+					//sanatization is referenced from my web programming Assignment 5 that Hawkins helped with, and the this assignment took reference code from web programming lab 16 
 					function sani($bad){
+						//line 65 the strip tags were pulled from hawkins web programming Lab 16
 						$good =  htmlentities( strip_tags( stripslashes( $bad ) ) );
 						return $good;
 					}
@@ -82,6 +88,7 @@
 							
 							if(strlen($_POST['user']) > 30 || strlen($_POST['psw']) > 50 || strlen($_POST['answer']) > 50) {
 								echo "<p>Maximum character limit has been reached!</p>";
+								//  Line 89 Was taught this semester by Thackston
 								$password = password_hash($password, PASSWORD_DEFAULT);
 								require_once "logging.php";
 								auditlog($myDBconnection, "Register Attempt Exceeded Character Limit", 2, $username, $password, $question, $answer);
@@ -109,6 +116,7 @@
 										if (empty($results)) {
 											//echo "test7";
 											try {
+												//  Line 117 Was taught this semester by Thackston
 												$password = password_hash($password, PASSWORD_DEFAULT);
 												//Check if table has the same fields & spelled the same way
 												$query = 'INSERT INTO users (user_name, password, security_question, answer, admin) VALUES (:user_name,:password,:security_question,:answer, "N");';

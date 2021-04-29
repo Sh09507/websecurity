@@ -27,6 +27,9 @@
 					<label id="user"><b>User Name: </b></label>
 					<input type="text" placeholder="Enter User Name" name="user" maxlength="30" required>
 					<br>
+					<!--
+						Lines 33-41 are code from Web programming assignment 5 profile.php values just changes from numbers to questions
+					-->
 					<label id="question"><b>Security Question: </b></label>
 					<input type="text" list="questionOptions" id="q" name="question" class="question"required>
 					<datalist id="questionOptions">                 
@@ -51,6 +54,7 @@
 	
 	<?php
 		//Connect to DB
+		// lines 64-69 was code referenced from Hawkins Web programming Lab 14 index.php
 			require_once 'database.php'; 
 			try {
 				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
@@ -60,6 +64,7 @@
 			}
 				
 			//sanitize function (to clean up malicious data)
+			//sanatization is referenced from my web programming Assignment 5 that Hawkins helped with, and the this assignment took reference code from web programming lab 16 with htmlentities and strip_tags/stripcslashes
 			function sani($bad){
 				$bad = stripslashes($bad);
 				$bad = strip_tags($bad);
@@ -77,7 +82,7 @@
 					$username = $_POST["user"];
 					$question = $_POST["question"];
 					$answer = $_POST["answer"];
-				
+					//sanatization is referenced from my web programming Assignment 5 that Hawkins helped with 
 					$username = sani($username);
 					$question = sani($question);
 					$answer = sani($answer);
@@ -105,12 +110,14 @@
 							}
 							//Does the username match the data in the table? 
 							if (!empty($result)) {
+								//  Line 114 Was shown in class this semester by Thackston
 								$token = bin2hex(random_bytes(15));
 								$query = 'INSERT INTO Cookies (user_name, Token, Expiration) VALUES (:username, :token, DATE_ADD(NOW(), INTERVAL 5 MINUTE));';
 								$statement = $myDBconnection -> prepare($query);
 								$statement -> bindValue(':username', $username); 
 								$statement -> bindValue(':token', $token);
 								$statement -> execute();
+								//  Line 120 Was shown in class this semester by Thackston
 								setcookie('Pwdcookie', $token, time() + (300), "/");
 								header('Location:recovery.php');
 							}else {

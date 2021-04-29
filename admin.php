@@ -28,6 +28,7 @@ if ($admin == True){
 	<main>
 		<?php
 			require_once 'database.php'; 
+			// lines 32-37 was code referenced from Hawkins Web programming Lab 14 index.php 
 			try {
 				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 			} catch (PDOException $e) {
@@ -55,6 +56,7 @@ if ($admin == True){
 				</li>
 		</ul>
 		<?php
+		//Lines 61-72 references Hawkins Web programming assignment 5 cart.php lines 108-119
 			$d = 'delete' . $value['user_name'];
 			if(isset($_POST[$d])) {
 				try {

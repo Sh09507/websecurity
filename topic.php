@@ -24,6 +24,7 @@
 			<?php
 			$t = $_GET['t'];
 			require_once 'database.php';
+			// lines 28-33 was code referenced from Hawkins Web programming Lab 14 index.php
 			try {
 				$myDBconnection = new PDO("mysql:host=$HOST_NAME;dbname=$DATABASE_NAME", $USERNAME, $PASSWORD);
 			} catch (PDOException $e) {

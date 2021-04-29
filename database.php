@@ -1,4 +1,5 @@
 <?php 
+// lines 3-8 was code from Hawkins Web programming Lab 14 database.php
 	$HOST_NAME = 'localhost';  
 	$DATABASE_NAME = 'websecurity';  
 	$USERNAME = 'phpmyadmin';  
